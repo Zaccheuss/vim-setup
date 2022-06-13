@@ -1,5 +1,6 @@
 call plug#begin()
 Plug 'vim-airline/vim-airline'
+Plug 'easymotion/vim-easymotion'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'dracula/vim', { 'as': 'dracula' }
@@ -8,7 +9,9 @@ call plug#end()
 " enable treesitter syntax highlighting
 lua << EOF
   require'nvim-treesitter.configs'.setup {
-    highlight = { enable = true }
+    ensure_installed = { "bash", "javascript", "json", "tsx", "typescript" },
+    sync_install = false,
+    highlight = { enable = true },
   }
 EOF
 
