@@ -21,3 +21,4 @@ cat ./sample.vimrc > ~/.config/nvim/init.vim
 
 # Install plugins
 nvim +'PlugInstall --sync' +qall
+nvim +'CocInstall -sync coc-json coc-tsserver' +qall
