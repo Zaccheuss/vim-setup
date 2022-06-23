@@ -1,8 +1,14 @@
+" =============================================================================
+" ==== PLUGINS ====
+" =============================================================================
 call plug#begin()
 Plug 'vim-airline/vim-airline'
 Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-commentary'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'dracula/vim', { 'as': 'dracula' }
 call plug#end()
 
@@ -15,6 +21,9 @@ lua << EOF
   }
 EOF
 
+" =============================================================================
+" ==== SET VIM VARIABLES ====
+" =============================================================================
 set hidden 	       "open files in other buffers without saving
 set number         "turn line numbers on
 set colorcolumn=80 "show vertical line at 80 characters
@@ -39,9 +48,14 @@ let &t_SI.="\e[5 q"
 let &t_SR.="\e[4 q"
 let &t_EI.="\e[1 q"
 
-" **********************
-" Coc recommended config
-" **********************
+" =============================================================================
+" ==== REMAPS ====
+" =============================================================================
+nnoremap <c-p> :Files<cr>
+
+" =============================================================================
+" ==== COC RECOMMENDED CONFIG ====
+" =============================================================================
 " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
 " unicode characters in the file autoload/float.vim
 set encoding=utf-8

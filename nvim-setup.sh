@@ -9,6 +9,9 @@ else
 	exit
 fi
 
+# TODO: Make sure C compiler is installed
+# TODO: Make sure apt is up to date
+
 # Install neovim and plugin manager
 sudo apt install neovim -y
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
@@ -18,6 +21,10 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 mkdir -p ~/.config/nvim
 touch ~/.config/nvim/init.vim
 cat ./sample.vimrc > ~/.config/nvim/init.vim
+
+# Install fzf binary
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
 
 # Install plugins
 nvim +'PlugInstall --sync' +qall
