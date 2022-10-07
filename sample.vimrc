@@ -3,14 +3,22 @@
 " =============================================================================
 call plug#begin()
 Plug 'vim-airline/vim-airline'
-Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-commentary'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'airblade/vim-gitgutter'
+Plug 'phaazon/hop.nvim'
+Plug 'tpope/vim-fugitive'
+Plug 'p00f/nvim-ts-rainbow'
 call plug#end()
+
+" retired plugins
+" Plug 'easymotion/vim-easymotion'
 
 " enable treesitter syntax highlighting
 lua << EOF
@@ -18,7 +26,20 @@ lua << EOF
     ensure_installed = { "bash", "javascript", "json", "tsx", "typescript" },
     sync_install = false,
     highlight = { enable = true },
+    rainbow = {
+        enable = true,
+        -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
+        extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+        max_file_lines = nil, -- Do not enable for files with more than n lines, int
+        -- colors = {}, -- table of hex strings
+        -- termcolors = {} -- table of colour name strings
+      }
   }
+EOF
+
+" initialize hop
+lua << EOF
+    require'hop'.setup()
 EOF
 
 " =============================================================================
@@ -29,19 +50,22 @@ set number         "turn line numbers on
 set colorcolumn=80 "show vertical line at 80 characters
 set scrolloff=4    "scroll when cursor is within 4 lines of the end of screen
 set termguicolors  "make color theme look correct, specifically bg color
+set number relativenumber
 colorscheme dracula
 
-set tabstop=2      "indent size
+set tabstop=4      "indent size
 set autoindent     "indent size
 set smartindent    "indent size
 set expandtab      "indent size
-set shiftwidth=2   "indent size
-set softtabstop=2  "indent size
+set shiftwidth=4   "indent size
+set softtabstop=4  "indent size
 
 set showmatch      "show matching brackets
 set ignorecase     "case insensitive matching
 set smartcase      "do case sensitive matching when a capital letter is typed
-set incsearch	     "incremental search, show matches as you are typing
+set incsearch	   "incremental search, show matches as you are typing
+
+set signcolumn=yes "Show sign column and line number separately
 
 "cursor fix in windows terminal
 let &t_SI.="\e[5 q"
@@ -51,7 +75,24 @@ let &t_EI.="\e[1 q"
 " =============================================================================
 " ==== REMAPS ====
 " =============================================================================
-nnoremap <c-p> :Files<cr>
+" Set a second leader, disable space's default behavior
+nnoremap <space> <Nop>
+map <space> <leader>
+map <space><space> <leader><leader>
+
+nnoremap <c-p> :GFiles<cr>
+nnoremap <leader>p :GFiles<cr>
+nnoremap <leader>o :Rg<cr>
+nnoremap <leader>l :Ex<cr>
+nnoremap <leader>b :Buffers<cr>
+nnoremap <leader>b :Buffers<cr>
+nnoremap <leader>q :bdelete<cr>
+
+" Map easymotion keybinds to hop plugin
+nnoremap <leader><leader>w :HopWordAC<cr>
+nnoremap <leader><leader>b :HopWordBC<cr>
+nnoremap <leader><leader>j :HopLineStartAC<cr>
+nnoremap <leader><leader>k :HopLineStartBC<cr>
 
 " =============================================================================
 " ==== COC RECOMMENDED CONFIG ====
@@ -70,15 +111,6 @@ set updatetime=300
 
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
-
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("nvim-0.5.0") || has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -201,18 +233,18 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Mappings for CoCList
 " Show all diagnostics.
-nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+" nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions.
-nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
 " Show commands.
-nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document.
-nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols.
-nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
-nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+" nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
-nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+" nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
-nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+" nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
