@@ -21,7 +21,7 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 # Create config file and copy over sample
 mkdir -p ~/.config/nvim
 touch ~/.config/nvim/init.vim
-cat ./sample.vimrc > ~/.config/nvim/init.vim
+cp ./init.vim  ~/.config/nvim/init.vim
 
 # Install fzf binary
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
