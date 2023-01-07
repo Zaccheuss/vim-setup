@@ -3,29 +3,34 @@
 " =============================================================================
 call plug#begin()
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-commentary'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'airblade/vim-gitgutter'
 Plug 'phaazon/hop.nvim'
 Plug 'tpope/vim-fugitive'
-Plug 'p00f/nvim-ts-rainbow'
+Plug 'sunjon/shade.nvim'
+Plug 'embear/vim-localvimrc'
 call plug#end()
 
 " retired plugins
 " Plug 'easymotion/vim-easymotion'
+" Plug 'p00f/nvim-ts-rainbow'
 
 " enable treesitter syntax highlighting
 lua << EOF
   require'nvim-treesitter.configs'.setup {
-    ensure_installed = { "bash", "javascript", "json", "tsx", "typescript" },
+    ensure_installed = { "bash", "javascript", "json", "tsx", "typescript", "vim" },
     sync_install = false,
     highlight = { enable = true },
+    indent = { enable = true },
     rainbow = {
         enable = true,
         -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
@@ -42,6 +47,21 @@ lua << EOF
     require'hop'.setup()
 EOF
 
+" initialize shade
+lua << EOF
+    require'shade'.setup({
+        overlay_opacity = 50,
+        opacity_step = 1,
+    })
+EOF
+
+" catppuccin color scheme
+lua << EOF
+    require("catppuccin").setup {
+        flavour = "macchiato" -- mocha, macchiato, frappe, latte
+    }
+EOF
+
 " =============================================================================
 " ==== SET VIM VARIABLES ====
 " =============================================================================
@@ -51,12 +71,12 @@ set colorcolumn=80 "show vertical line at 80 characters
 set scrolloff=4    "scroll when cursor is within 4 lines of the end of screen
 set termguicolors  "make color theme look correct, specifically bg color
 set number relativenumber
-colorscheme dracula
+colorscheme catppuccin-macchiato
 
-set tabstop=4      "indent size
 set autoindent     "indent size
 set smartindent    "indent size
 set expandtab      "indent size
+set tabstop=4      "indent size
 set shiftwidth=4   "indent size
 set softtabstop=4  "indent size
 
@@ -71,6 +91,9 @@ set signcolumn=yes "Show sign column and line number separately
 let &t_SI.="\e[5 q"
 let &t_SR.="\e[4 q"
 let &t_EI.="\e[1 q"
+
+"set default airline theme (for coloring the statusline)
+let g:airline_theme='bubblegum'
 
 " =============================================================================
 " ==== REMAPS ====
