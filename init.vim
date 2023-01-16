@@ -16,13 +16,13 @@ Plug 'mxw/vim-jsx'
 Plug 'airblade/vim-gitgutter'
 Plug 'phaazon/hop.nvim'
 Plug 'tpope/vim-fugitive'
-Plug 'sunjon/shade.nvim'
 Plug 'embear/vim-localvimrc'
 call plug#end()
 
 " retired plugins
 " Plug 'easymotion/vim-easymotion'
 " Plug 'p00f/nvim-ts-rainbow'
+" Plug 'sunjon/shade.nvim' ---- breaks CoC hover (e.g. when pressing Ctrl + K)
 
 " enable treesitter syntax highlighting
 lua << EOF
@@ -47,14 +47,6 @@ lua << EOF
     require'hop'.setup()
 EOF
 
-" initialize shade
-lua << EOF
-    require'shade'.setup({
-        overlay_opacity = 50,
-        opacity_step = 1,
-    })
-EOF
-
 " catppuccin color scheme
 lua << EOF
     require("catppuccin").setup {
@@ -71,14 +63,15 @@ set colorcolumn=80 "show vertical line at 80 characters
 set scrolloff=4    "scroll when cursor is within 4 lines of the end of screen
 set termguicolors  "make color theme look correct, specifically bg color
 set number relativenumber
+set cursorline     "highlight the line the cursor is on
 colorscheme catppuccin-macchiato
 
 set autoindent     "indent size
 set smartindent    "indent size
 set expandtab      "indent size
-set tabstop=4      "indent size
-set shiftwidth=4   "indent size
-set softtabstop=4  "indent size
+set tabstop=2      "indent size
+set shiftwidth=2   "indent size
+set softtabstop=2  "indent size
 
 set showmatch      "show matching brackets
 set ignorecase     "case insensitive matching
