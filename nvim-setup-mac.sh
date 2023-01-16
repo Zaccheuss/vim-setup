@@ -24,9 +24,10 @@ mkdir -p ~/.config/nvim
 touch ~/.config/nvim/init.vim
 cat ./sample.vimrc > ~/.config/nvim/init.vim
 
-# Install fzf binary
+# Install fzf binary and ripgrep
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
+brew install ripgrep
 
 # Install plugins
 nvim +'PlugInstall --sync' +qall

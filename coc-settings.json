@@ -1,0 +1,4 @@
+{
+    "tsserver.trace.server": "verbose",
+    "coc.preferences.echodocSupport": true
+}
