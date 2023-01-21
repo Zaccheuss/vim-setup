@@ -27,18 +27,21 @@ call plug#end()
 " enable treesitter syntax highlighting
 lua << EOF
   require'nvim-treesitter.configs'.setup {
-    ensure_installed = { "bash", "javascript", "json", "tsx", "typescript", "vim" },
+    ensure_installed = { "bash", "javascript", "json", "tsx", "typescript", "vim", "css", "scss"},
     sync_install = false,
-    highlight = { enable = true },
+    highlight = { 
+      enable = true,
+      additional_vim_regex_highlighting = false
+    },
     indent = { enable = true },
     rainbow = {
-        enable = true,
-        -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
-        extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-        max_file_lines = nil, -- Do not enable for files with more than n lines, int
-        -- colors = {}, -- table of hex strings
-        -- termcolors = {} -- table of colour name strings
-      }
+      enable = true,
+      -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
+      extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+      max_file_lines = nil, -- Do not enable for files with more than n lines, int
+      -- colors = {}, -- table of hex strings
+      -- termcolors = {} -- table of colour name strings
+    }
   }
 EOF
 
@@ -50,7 +53,26 @@ EOF
 " catppuccin color scheme
 lua << EOF
     require("catppuccin").setup {
-        flavour = "macchiato" -- mocha, macchiato, frappe, latte
+        flavour = "macchiato", -- mocha, macchiato, frappe, latte
+        integrations = {
+          treesitter = true,
+          treesitter_context = true,
+          hop = true,
+        },
+        styles = {
+          comments = { "italic" },
+          conditionals = { "italic" },
+          loops = { "italic" },
+          functions = { "italic" },
+          keywords = {},
+          strings = { "italic" },
+          variables = {},
+          numbers = {},
+          booleans = {},
+          properties = {},
+          types = {},
+          operators = {},
+        },
     }
 EOF
 
@@ -81,12 +103,12 @@ set incsearch	   "incremental search, show matches as you are typing
 set signcolumn=yes "Show sign column and line number separately
 
 "cursor fix in windows terminal
-let &t_SI.="\e[5 q"
-let &t_SR.="\e[4 q"
-let &t_EI.="\e[1 q"
+" let &t_SI.="\e[5 q"
+" let &t_SR.="\e[4 q"
+" let &t_EI.="\e[1 q"
 
 "set default airline theme (for coloring the statusline)
-let g:airline_theme='bubblegum'
+let g:airline_theme='catppuccin'
 
 " =============================================================================
 " ==== REMAPS ====
@@ -99,10 +121,7 @@ map <space><space> <leader><leader>
 nnoremap <c-p> :GFiles<cr>
 nnoremap <leader>p :GFiles<cr>
 nnoremap <leader>o :Rg<cr>
-nnoremap <leader>l :Ex<cr>
 nnoremap <leader>b :Buffers<cr>
-nnoremap <leader>b :Buffers<cr>
-nnoremap <leader>q :bdelete<cr>
 
 " Map easymotion keybinds to hop plugin
 nnoremap <leader><leader>w :HopWordAC<cr>
