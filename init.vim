@@ -17,6 +17,8 @@ Plug 'airblade/vim-gitgutter'
 Plug 'phaazon/hop.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'embear/vim-localvimrc'
+Plug 'preservim/nerdtree'
+Plug 'APZelos/blamer.nvim'
 call plug#end()
 
 " retired plugins
@@ -110,6 +112,22 @@ set signcolumn=yes "Show sign column and line number separately
 "set default airline theme (for coloring the statusline)
 let g:airline_theme='catppuccin'
 
+" testing out blamer.nvim (git lens copycat)
+let g:blamer_enabled=1
+let g:blamer_delay=1000 "default=1000
+
+" All defaults except border & title
+let g:gitgutter_floating_window_options= {
+      \ 'title': 'Git',
+      \ 'border': 'single',
+      \ 'relative': 'cursor',
+      \ 'row': 1,
+      \ 'col': 0,
+      \ 'width': 42,
+      \ 'height': &previewheight,
+      \ 'style': 'minimal'
+      \}
+
 " =============================================================================
 " ==== REMAPS ====
 " =============================================================================
@@ -122,12 +140,18 @@ nnoremap <c-p> :GFiles<cr>
 nnoremap <leader>p :GFiles<cr>
 nnoremap <leader>o :Rg<cr>
 nnoremap <leader>b :Buffers<cr>
+nnoremap <leader>g :GitGutterPreviewHunk<cr>
 
 " Map easymotion keybinds to hop plugin
 nnoremap <leader><leader>w :HopWordAC<cr>
 nnoremap <leader><leader>b :HopWordBC<cr>
 nnoremap <leader><leader>j :HopLineStartAC<cr>
 nnoremap <leader><leader>k :HopLineStartBC<cr>
+
+" NERDTree keybinds
+nnoremap <leader>t :NERDTreeToggle<cr>
+" Find the current file location in the file tree and opens the nerdtree buf
+nnoremap <leader><leader>t :NERDTreeFind<cr>
 
 " =============================================================================
 " ==== COC RECOMMENDED CONFIG ====

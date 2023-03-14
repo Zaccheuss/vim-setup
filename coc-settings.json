@@ -1,4 +1,21 @@
-{
-    "tsserver.trace.server": "verbose",
-    "coc.preferences.echodocSupport": true
+{ 
+    "javascript.suggest.autoImports": true, 
+    "typescript.suggest.autoImports": true,
+    "diagnostic.checkCurrentLine": true,
+    "suggest.floatConfig": {
+      "border": true,
+      "winblend": 15,
+    },
+    "hover.floatConfig": {
+      "border": true,
+      "winblend": 15,
+    },
+    "signature.floatConfig": {
+      "border": true,
+      "winblend": 15,
+    },
+    "diagnostic.floatConfig": {
+      "border": true,
+      "winblend": 15,
+    },
 }
