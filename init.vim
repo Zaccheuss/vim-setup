@@ -19,6 +19,9 @@ Plug 'tpope/vim-fugitive'
 Plug 'embear/vim-localvimrc'
 Plug 'preservim/nerdtree'
 Plug 'APZelos/blamer.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.1' }
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
 call plug#end()
 
 " retired plugins
@@ -45,6 +48,43 @@ lua << EOF
       -- termcolors = {} -- table of colour name strings
     }
   }
+EOF
+
+" telescope
+lua << EOF
+  require('telescope').setup {
+    extensions = {
+      fzf = {
+        fuzzy = true,
+        override_generic_sorter = true,
+        override_file_sorter = true,
+        case_mode = "smart_case",
+      }
+    },
+    defaults = {
+      layout_config = {
+        width = 0.90
+      },
+      mappings = {
+        n = { 
+          -- Normal mode mappings go here
+        },
+        i = {
+          ["<C-j>"] = {
+            require("telescope.actions").move_selection_next, type = "action",
+            opts = { nowait = true, silent = true }
+          },
+          ["<C-k>"] = {
+            require("telescope.actions").move_selection_previous, type = "action",
+            opts = { nowait = true, silent = true }
+          },
+          ["<Esc>"] = require("telescope.actions").close
+        }
+      }
+    }
+  }
+
+  require('telescope').load_extension('fzf')
 EOF
 
 " initialize hop
@@ -136,10 +176,10 @@ nnoremap <space> <Nop>
 map <space> <leader>
 map <space><space> <leader><leader>
 
-nnoremap <c-p> :GFiles<cr>
-nnoremap <leader>p :GFiles<cr>
-nnoremap <leader>o :Rg<cr>
-nnoremap <leader>b :Buffers<cr>
+nnoremap <c-p> <cmd>Telescope find_files<cr>
+nnoremap <leader>p <cmd>Telescope find_files<cr>
+nnoremap <leader>b <cmd>Telescope buffers<cr>
+nnoremap <leader>o <cmd>Telescope live_grep<cr>
 nnoremap <leader>g :GitGutterPreviewHunk<cr>
 
 " Map easymotion keybinds to hop plugin
