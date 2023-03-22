@@ -1,4 +1,5 @@
 " =============================================================================
+"
 " ==== PLUGINS ====
 " =============================================================================
 call plug#begin()
@@ -21,7 +22,7 @@ Plug 'preservim/nerdtree'
 Plug 'APZelos/blamer.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.1' }
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 call plug#end()
 
 " retired plugins
@@ -53,17 +54,17 @@ EOF
 " telescope
 lua << EOF
   require('telescope').setup {
-    extensions = {
-      fzf = {
-        fuzzy = true,
-        override_generic_sorter = true,
-        override_file_sorter = true,
-        case_mode = "smart_case",
-      }
+    pickers = {
+      buffers = {
+        sort_lastused = true,
+      },
+      --live_grep = {
+      --  only_sort_text = true
+      --}
     },
     defaults = {
       layout_config = {
-        width = 0.90
+        width = 0.95,
       },
       mappings = {
         n = { 
@@ -84,6 +85,19 @@ lua << EOF
     }
   }
 
+  require('telescope').setup {
+    extensions = {
+      fzf = {
+        fuzzy = true,                    -- false will only do exact matching
+        override_generic_sorter = true,  -- override the generic sorter
+        override_file_sorter = true,     -- override the file sorter
+        case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+                                         -- the default case_mode is "smart_case"
+      }
+    }
+  }
+  -- To get fzf loaded and working with telescope, you need to call
+  -- load_extension, somewhere after setup function:
   require('telescope').load_extension('fzf')
 EOF
 
@@ -159,7 +173,8 @@ let g:blamer_delay=1000 "default=1000
 " All defaults except border & title
 let g:gitgutter_floating_window_options= {
       \ 'title': 'Git',
-      \ 'border': 'single',
+      \ 'title_pos': 'center',
+      \ 'border': 'rounded',
       \ 'relative': 'cursor',
       \ 'row': 1,
       \ 'col': 0,
@@ -167,6 +182,41 @@ let g:gitgutter_floating_window_options= {
       \ 'height': &previewheight,
       \ 'style': 'minimal'
       \}
+
+" Open nerdtree on the right and set max width higher (autosizes by default)
+let g:NERDTreeWinPos = "right"
+let g:NERDTreeWinSize = 60
+
+" Increase size of fzf search window, messing around with colors
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
+let g:fzf_colors =
+\ { 
+  \ 'border':  ['fg', 'Conditional'],
+  \ 'gutter':  ['bg', 'Normal'],
+\}
+" let g:fzf_colors =
+" \ { 
+"   \ 'fg':      ['fg', 'Normal'],
+"   \ 'bg':      ['bg', 'Normal'],
+"   \ 'hl':      ['fg', 'Comment'],
+"   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+"   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+"   \ 'hl+':     ['fg', 'Statement'],
+"   \ 'info':    ['fg', 'Statement'],
+"   \ 'border':  ['fg', 'Conditional'],
+"   \ 'prompt':  ['fg', 'Conditional'],
+"   \ 'pointer': ['fg', 'Exception'],
+"   \ 'marker':  ['fg', 'Keyword'],
+"   \ 'spinner': ['fg', 'Label'],
+"   \ 'header':  ['fg', 'Comment'] 
+" \}
+
+" Make bat (cat alternative) the default fzf preview, which allows for syntax
+" highlighting in the preview window
+let g:fzf_files_options = '--preview "bat --theme="Dracula" --style=numbers,changes --color always {2..-1} | head -'.&lines.'"'
+
+" Shorter command for viewing git status files via Telescope
+command! -nargs=0 Tg :Telescope git_status
 
 " =============================================================================
 " ==== REMAPS ====
@@ -179,8 +229,12 @@ map <space><space> <leader><leader>
 nnoremap <c-p> <cmd>Telescope find_files<cr>
 nnoremap <leader>p <cmd>Telescope find_files<cr>
 nnoremap <leader>b <cmd>Telescope buffers<cr>
-nnoremap <leader>o <cmd>Telescope live_grep<cr>
+" nnoremap <leader>o <cmd>Telescope live_grep<cr> "Get rid of this for now,
+" :Rg appears to be better for fuzzy searching text
+nnoremap <leader>o :Rg<cr>
 nnoremap <leader>g :GitGutterPreviewHunk<cr>
+" Quickly switch between previous buffer
+nnoremap <leader>s :b#<cr> 
 
 " Map easymotion keybinds to hop plugin
 nnoremap <leader><leader>w :HopWordAC<cr>
@@ -332,18 +386,25 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Mappings for CoCList
 " Show all diagnostics.
-" nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent><nowait> <leader><leader>a  :<C-u>CocList diagnostics<cr>
+
 " Manage extensions.
 " nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+
 " Show commands.
 " nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+
 " Find symbol of current document.
 " nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+
 " Search workspace symbols.
 " nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+
 " Do default action for next item.
 " nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+
 " Do default action for previous item.
 " nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+
 " Resume latest coc list.
 " nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
