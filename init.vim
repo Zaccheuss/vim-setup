@@ -17,6 +17,7 @@ Plug 'mxw/vim-jsx'
 Plug 'airblade/vim-gitgutter'
 Plug 'phaazon/hop.nvim'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'embear/vim-localvimrc'
 Plug 'preservim/nerdtree'
 Plug 'APZelos/blamer.nvim'
@@ -233,6 +234,9 @@ nnoremap <leader>b <cmd>Telescope buffers<cr>
 " :Rg appears to be better for fuzzy searching text
 nnoremap <leader>o :Rg<cr>
 nnoremap <leader>g :GitGutterPreviewHunk<cr>
+nnoremap <leader>gn :GitGutterNextHunk<cr>
+nnoremap <leader>gN :GitGutterPrevHunk<cr>
+nnoremap <leader>gu :GitGutterUndoHunk<cr>
 " Quickly switch between previous buffer
 nnoremap <leader>s :b#<cr> 
 
