@@ -56,9 +56,9 @@ EOF
 lua << EOF
   require('telescope').setup {
     pickers = {
-      buffers = {
-        sort_lastused = true,
-      },
+      --buffers = {
+      --  sort_lastused = true,
+      --},
       --live_grep = {
       --  only_sort_text = true
       --}
@@ -167,6 +167,13 @@ set signcolumn=yes "Show sign column and line number separately
 "set default airline theme (for coloring the statusline)
 let g:airline_theme='catppuccin'
 
+"truncate branch namae
+" let g:airline#extensions#branch#displayed_head_limit = 10
+" let g:airline#extensions#branch#format = 1
+"remove branch info and file encoding entirely
+let g:airline_section_b=''
+let g:airline_section_y=''
+
 " testing out blamer.nvim (git lens copycat)
 let g:blamer_enabled=1
 let g:blamer_delay=1000 "default=1000
@@ -219,6 +226,8 @@ let g:fzf_files_options = '--preview "bat --theme="Dracula" --style=numbers,chan
 " Shorter command for viewing git status files via Telescope
 command! -nargs=0 Tg :Telescope git_status
 
+hi LineNr guibg=none guifg=#71768f
+
 " =============================================================================
 " ==== REMAPS ====
 " =============================================================================
@@ -233,7 +242,7 @@ nnoremap <leader>b <cmd>Telescope buffers<cr>
 " nnoremap <leader>o <cmd>Telescope live_grep<cr> "Get rid of this for now,
 " :Rg appears to be better for fuzzy searching text
 nnoremap <leader>o :Rg<cr>
-nnoremap <leader>g :GitGutterPreviewHunk<cr>
+nnoremap <leader>gg :GitGutterPreviewHunk<cr>
 nnoremap <leader>gn :GitGutterNextHunk<cr>
 nnoremap <leader>gN :GitGutterPrevHunk<cr>
 nnoremap <leader>gu :GitGutterUndoHunk<cr>
@@ -250,6 +259,15 @@ nnoremap <leader><leader>k :HopLineStartBC<cr>
 nnoremap <leader>t :NERDTreeToggle<cr>
 " Find the current file location in the file tree and opens the nerdtree buf
 nnoremap <leader><leader>t :NERDTreeFind<cr>
+
+" Use tab to cycle through buffers
+lua << EOF
+ vim.keymap.set('n', '<Tab>', '<cmd>:bnext<cr>')
+ vim.keymap.set('n', '<S-Tab>', '<cmd>:bprevious<cr>')
+EOF
+
+" Close buffer in split pane without closing split
+nnoremap <leader>w :bp\|bd #<CR>
 
 " =============================================================================
 " ==== COC RECOMMENDED CONFIG ====
