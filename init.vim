@@ -174,9 +174,10 @@ let g:airline_theme='catppuccin'
 let g:airline_section_b=''
 let g:airline_section_y=''
 
-" testing out blamer.nvim (git lens copycat)
+" blamer.nvim (git lens copycat)
 let g:blamer_enabled=1
 let g:blamer_delay=1000 "default=1000
+let g:blamer_date_format='%m/%d/%y'
 
 " All defaults except border & title
 let g:gitgutter_floating_window_options= {
