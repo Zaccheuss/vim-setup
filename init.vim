@@ -21,8 +21,8 @@ Plug 'tpope/vim-rhubarb'
 Plug 'embear/vim-localvimrc'
 Plug 'preservim/nerdtree'
 Plug 'APZelos/blamer.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.1' }
+Plug 'nvim-lua/plenary.nvim' "required for telescope
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.3' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 call plug#end()
 
