@@ -1,5 +1,4 @@
 " =============================================================================
-"
 " ==== PLUGINS ====
 " =============================================================================
 call plug#begin()
@@ -24,6 +23,8 @@ Plug 'APZelos/blamer.nvim'
 Plug 'nvim-lua/plenary.nvim' "required for telescope
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.3' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'kkharji/sqlite.lua'
+Plug 'nvim-telescope/telescope-frecency.nvim'
 call plug#end()
 
 " retired plugins
@@ -94,12 +95,21 @@ lua << EOF
         override_file_sorter = true,     -- override the file sorter
         case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
                                          -- the default case_mode is "smart_case"
+      },
+      frecency = {
+        show_scores = true,
+        show_filter_column = {"mobile", "helios"},
+        workspaces = {
+          ["mobile"] = "~/milli/mino-mobile",
+          ["helios"] = "~/milli/mino-helios",
+        }
       }
     }
   }
   -- To get fzf loaded and working with telescope, you need to call
   -- load_extension, somewhere after setup function:
   require('telescope').load_extension('fzf')
+  require('telescope').load_extension('frecency')
 EOF
 
 " initialize hop
@@ -240,9 +250,11 @@ map <space><space> <leader><leader>
 nnoremap <c-p> <cmd>Telescope find_files<cr>
 nnoremap <leader>p <cmd>Telescope find_files<cr>
 nnoremap <leader>b <cmd>Telescope buffers<cr>
+nnoremap <leader>l <cmd>Telescope frecency<cr>
 " nnoremap <leader>o <cmd>Telescope live_grep<cr> "Get rid of this for now,
 " :Rg appears to be better for fuzzy searching text
 nnoremap <leader>o :Rg<cr>
+
 nnoremap <leader>gg :GitGutterPreviewHunk<cr>
 nnoremap <leader>gn :GitGutterNextHunk<cr>
 nnoremap <leader>gN :GitGutterPrevHunk<cr>
@@ -269,6 +281,12 @@ EOF
 
 " Close buffer in split pane without closing split
 nnoremap <leader>w :bp\|bd #<CR>
+
+" =============================================================================
+" ==== AUTOCMDS ====
+" =============================================================================
+" Wrap text when editing Markdown files
+autocmd BufEnter *.md setlocal textwidth=79
 
 " =============================================================================
 " ==== COC RECOMMENDED CONFIG ====

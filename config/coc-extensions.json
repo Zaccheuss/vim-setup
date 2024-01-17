@@ -1,0 +1,12 @@
+{
+  "extensions": [
+    "coc-tsserver",
+    "coc-sh",
+    "coc-kotlin",
+    "coc-json",
+    "coc-css",
+    "@yaegassy/coc-tailwindcss3",
+    "coc-spell-checker",
+    "coc-eslint"
+  ]
+}
