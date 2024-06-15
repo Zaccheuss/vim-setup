@@ -20,11 +20,13 @@ Plug 'tpope/vim-rhubarb'
 Plug 'embear/vim-localvimrc'
 Plug 'preservim/nerdtree'
 Plug 'APZelos/blamer.nvim'
-Plug 'nvim-lua/plenary.nvim' "required for telescope
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.3' }
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.4' }
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'kkharji/sqlite.lua'
 Plug 'nvim-telescope/telescope-frecency.nvim'
+Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2' }
 call plug#end()
 
 " retired plugins
@@ -35,7 +37,7 @@ call plug#end()
 " enable treesitter syntax highlighting
 lua << EOF
   require'nvim-treesitter.configs'.setup {
-    ensure_installed = { "bash", "javascript", "json", "tsx", "typescript", "vim", "css", "scss"},
+    ensure_installed = { "lua", "bash", "javascript", "json", "tsx", "typescript", "vim", "css", "scss"},
     sync_install = false,
     highlight = { 
       enable = true,
@@ -52,6 +54,21 @@ lua << EOF
     }
   }
 EOF
+
+" enable indent-blankline
+lua << EOF
+  require("ibl").setup {
+    scope = { enabled = false }  
+  }
+EOF
+
+
+" " nerdtree
+" lua << EOF
+"   require('nvim-tree').setup({
+"     view = { relativenumber = true }
+"   })
+" EOF
 
 " telescope
 lua << EOF
@@ -88,8 +105,12 @@ lua << EOF
   }
 
   require('telescope').setup {
+    defaults = {
+      path_display = {"shorten"},
+    },
     extensions = {
       fzf = {
+        -- path_display = {"shorten"},
         fuzzy = true,                    -- false will only do exact matching
         override_generic_sorter = true,  -- override the generic sorter
         override_file_sorter = true,     -- override the file sorter
@@ -97,11 +118,13 @@ lua << EOF
                                          -- the default case_mode is "smart_case"
       },
       frecency = {
-        show_scores = true,
+        show_scores = false,
+        show_unindexed = false,
         show_filter_column = {"mobile", "helios"},
+        ignore_patterns = {"*.git/*", "*/tmp/*", "*/node_modules/*", "*/ios/*", "*.yarn/*", "/android/*"},
         workspaces = {
-          ["mobile"] = "~/milli/mino-mobile",
-          ["helios"] = "~/milli/mino-helios",
+          ["mobile"] = "/Users/zfuller/milli/mino-mobile",
+          ["helios"] = "/Users/zfuller/milli/mino-helios",
         }
       }
     }
@@ -141,6 +164,10 @@ lua << EOF
           operators = {},
         },
     }
+EOF
+
+lua << EOF
+  require('harpoon').setup()
 EOF
 
 " =============================================================================
@@ -259,6 +286,8 @@ nnoremap <leader>gg :GitGutterPreviewHunk<cr>
 nnoremap <leader>gn :GitGutterNextHunk<cr>
 nnoremap <leader>gN :GitGutterPrevHunk<cr>
 nnoremap <leader>gu :GitGutterUndoHunk<cr>
+" Refresh signs
+nnoremap <leader>gR :GitGutterAll<cr>
 " Quickly switch between previous buffer
 nnoremap <leader>s :b#<cr> 
 
@@ -280,13 +309,21 @@ lua << EOF
 EOF
 
 " Close buffer in split pane without closing split
-nnoremap <leader>w :bp\|bd #<CR>
+nnoremap <leader>w :bp\|bd#<CR>
+
+" Harpoon
+lua << EOF
+  local harpoon = require("harpoon")
+  vim.keymap.set('n', '<leader><leader>y', function() harpoon:list():add() end)
+  vim.keymap.set('n', '<leader><leader>u', function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+EOF
 
 " =============================================================================
-" ==== AUTOCMDS ====
+" ==== AUTOCMDS & COMMANDS ====
 " =============================================================================
 " Wrap text when editing Markdown files
-autocmd BufEnter *.md setlocal textwidth=79
+autocmd BufEnter *.md setlocal textwidth=119
+autocmd BufEnter *.md setlocal colorcolumn=120
 
 " =============================================================================
 " ==== COC RECOMMENDED CONFIG ====
