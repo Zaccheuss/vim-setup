@@ -4,18 +4,32 @@
     "diagnostic.checkCurrentLine": true,
     "suggest.floatConfig": {
       "border": true,
+      "rounded": true,
       "winblend": 15,
     },
     "hover.floatConfig": {
       "border": true,
+      "rounded": true,
       "winblend": 15,
     },
     "signature.floatConfig": {
       "border": true,
+      "rounded": true,
       "winblend": 15,
     },
     "diagnostic.floatConfig": {
       "border": true,
+      "rounded": true,
       "winblend": 15,
+      "maxWidth": 100,
     },
+    "eslint.alwaysShowStatus": true,
+    "tailwindCSS.headwind.runOnSave": false,
+    "cSpell.enabledLanguageIds": [
+        "markdown"
+    ],
+    "cSpell.userWords": [
+      "milli",
+      "timeframe"
+    ]
 }
