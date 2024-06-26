@@ -232,6 +232,7 @@ let g:gitgutter_floating_window_options= {
 " Open nerdtree on the right and set max width higher (autosizes by default)
 let g:NERDTreeWinPos = "right"
 let g:NERDTreeWinSize = 60
+let NERDTreeShowLineNumbers = 1
 
 " Increase size of fzf search window, messing around with colors
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
