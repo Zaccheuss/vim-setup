@@ -37,7 +37,7 @@ call plug#end()
 " enable treesitter syntax highlighting
 lua << EOF
   require'nvim-treesitter.configs'.setup {
-    ensure_installed = { "lua", "bash", "javascript", "json", "tsx", "typescript", "vim", "css", "scss"},
+    ensure_installed = { "lua", "bash", "javascript", "json", "tsx", "typescript", "vim", "css", "scss", "coc-spell-checker"},
     sync_install = false,
     highlight = { 
       enable = true,
