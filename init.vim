@@ -17,6 +17,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'phaazon/hop.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
+Plug 'tpope/vim-surround'
 Plug 'embear/vim-localvimrc'
 Plug 'preservim/nerdtree'
 Plug 'APZelos/blamer.nvim'
@@ -37,7 +38,7 @@ call plug#end()
 " enable treesitter syntax highlighting
 lua << EOF
   require'nvim-treesitter.configs'.setup {
-    ensure_installed = { "lua", "bash", "javascript", "json", "tsx", "typescript", "vim", "css", "scss", "coc-spell-checker"},
+    ensure_installed = { "lua", "bash", "javascript", "json", "tsx", "typescript", "vim", "css", "scss"},
     sync_install = false,
     highlight = { 
       enable = true,
