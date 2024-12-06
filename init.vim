@@ -28,6 +28,8 @@ Plug 'kkharji/sqlite.lua'
 Plug 'nvim-telescope/telescope-frecency.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2' }
+Plug 'tpope/vim-surround'
+Plug 'sphamba/smear-cursor.nvim'
 call plug#end()
 
 " retired plugins
@@ -55,6 +57,9 @@ lua << EOF
     }
   }
 EOF
+
+" enable smear
+lua require('smear_cursor').enabled = true
 
 " enable indent-blankline
 lua << EOF
@@ -145,6 +150,7 @@ EOF
 lua << EOF
     require("catppuccin").setup {
         flavour = "macchiato", -- mocha, macchiato, frappe, latte
+        transparent_background = true,
         integrations = {
           treesitter = true,
           treesitter_context = true,
@@ -375,6 +381,8 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nmap <silent> <leader>eN <Plug>(coc-diagnostic-prev)
+nmap <silent> <leader>en <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)

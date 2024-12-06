@@ -6,8 +6,8 @@ then
 fi
 
 if [ -d ~/.config/nvim/ ]; then
-  cp ./init.vim  ~/.config/nvim/init.vim
-  echo "local init.vim copied to ~/.config/nvim/init.vim"
+  cp ~/utils/vim-setup/init.vim  ~/.config/nvim/init.vim
+  echo "local ~/utils/vim-setup/init.vim copied to ~/.config/nvim/init.vim"
 else
   echo "Could not find ~/.config/nvim/"
 fi
